@@ -34,64 +34,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<!-- jQuery 3 -->
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+
 	<!-- Bootstrap 3.3.7 -->
 	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
 	<!-- AdminLTE App -->
 	<script src="dist/js/adminlte.min.js"></script>
 
+    <!-- The jQuery library is a prerequisite for all jqSuite products -->
+    <script type="text/ecmascript" src="js/jquery-1.11.0.min.js"></script> 
 
-	<link rel="stylesheet" type="text/css" media="screen" href="../css/jquery-ui-1.11.1.min.css" />
-	<link rel="stylesheet" type="text/css" media="screen" href="../css/ui.jqgrid.css" />
+    <!-- We support more than 40 localizations -->
+    <script type="text/ecmascript" src="trirand/js/i18n/grid.locale-en.js"></script>
 
-	<script src="../js/jquery-1.11.0.min.js" type="text/javascript"></script>
-	<script src="../js/i18n/grid.locale-kr.js" type="text/javascript"></script>
-	<script src="../js/jquery.jqGrid.min.js" type="text/javascript"></script>
+    <!-- This is the Javascript file of jqGrid -->   
+    <script type="text/ecmascript" src="trirand/src/jquery.jqGrid.js"></script>
+    
+	<!-- This is the localization file of the grid controlling messages, labels, etc.
+    <!-- A link to a jQuery UI ThemeRoller theme, more than 22 built-in and many more custom -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> 
 
+    <!-- The link to the CSS that the grid needs -->
+    <link rel="stylesheet" type="text/css" media="screen" href="trirand/css/ui.jqgrid-bootstrap.css" />
 
-<script type="text/javascript">
-$(function(){
-
-	// 변수 선언
-	var i, max, myData, grid = $("#list4");
-
-	// grid 설정
-	grid.jqGrid({
-		datatype: "local",
-		height: 'auto',
-		colNames:['Inv No','Date', 'Client', 'Amount','Tax','Total','Notes'],
-		colModel:[
-			{name:'id',index:'id', width:60, sorttype:"int"},
-			{name:'invdate',index:'invdate', width:90, sorttype:"date"},
-			{name:'name',index:'name', width:100},
-			{name:'amount',index:'amount', width:80, align:"right",sorttype:"float"},
-			{name:'tax',index:'tax', width:80, align:"right",sorttype:"float"},
-			{name:'total',index:'total', width:80,align:"right",sorttype:"float"},
-			{name:'note',index:'note', width:150, sortable:false}
-		],
-		multiselect: true,
-		caption: "Manipulating Array Data"
-	});
-
-	// 로컬 데이터
-	myData = [
-		{id:"1",invdate:"2007-10-01",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
-		{id:"2",invdate:"2007-10-02",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
-		{id:"3",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
-		{id:"4",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
-		{id:"5",invdate:"2007-10-05",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
-		{id:"6",invdate:"2007-09-06",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
-		{id:"7",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
-		{id:"8",invdate:"2007-10-03",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
-		{id:"9",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"}
-	];
-
-	// 데이터 추가
-	for( i=0, max = myData.length ; i<=max ; i++ ){
-		grid.jqGrid('addRowData', i+1, myData[i]);
-	}
-});
-</script>
-
+	<script>
+		$.jgrid.defaults.width = 780;
+	</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -111,7 +80,7 @@ $(function(){
 	</aside>
 
 	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper">
+	<div class="content-wrapper" style="background-color: #ffffff;">
 
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
@@ -131,9 +100,8 @@ $(function(){
 			<!--------------------------
 			| Your Page Content Here |
 			-------------------------->
-			<table id="list4"></table>
-
-
+			<table id="jqGrid" style="width:100%"></table>
+    		<div id="jqGridPager"></div>
 
 		</section>
 		<!-- /.content -->
@@ -146,5 +114,28 @@ $(function(){
 </div>
 <!-- ./wrapper -->
 
+
+   <script type="text/javascript"> 
+        $(document).ready(function () {
+			
+            $("#jqGrid").jqGrid({
+                url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+                mtype: "GET",
+				styleUI : 'Bootstrap',
+                datatype: "jsonp",
+                colModel: [
+                    { label: 'OrderID', name: 'OrderID', key: true, width: 75 },
+                    { label: 'Customer ID', name: 'CustomerID', width: 150 },
+                    { label: 'Order Date', name: 'OrderDate', width: 150 },
+                    { label: 'Freight', name: 'Freight', width: 150 },
+                    { label:'Ship Name', name: 'ShipName', width: 150 }
+                ],
+				viewrecords: true,
+                height: 500,
+                rowNum: 20,
+                pager: "#jqGridPager"
+            });
+        });
+   </script>
 </body>
 </html>
